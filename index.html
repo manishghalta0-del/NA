@@ -10,6 +10,12 @@
   <div id="login-container"></div>
   <div id="recaptcha-container"></div>
   
-  <script type="module" src="app.js"></script>
+  <!-- Firebase SDKs MUST be loaded FIRST -->
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore.js"></script>
+  
+  <!-- THEN load your app.js -->
+  <script src="app.js"></script>
 </body>
 </html>
