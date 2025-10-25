@@ -1,0 +1,545 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dream Harbour - Professional Services</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Login Page -->
+    <div id="login-page" class="login-container">
+        <div class="login-left-panel">
+            <div class="logo-container">
+                <svg class="logo" width="60" height="60" viewBox="0 0 60 60" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <defs>
+                        <linearGradient id="logoGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                            <stop offset="0%" style="stop-color:#1e40af;stop-opacity:1" />
+                            <stop offset="100%" style="stop-color:#3b82f6;stop-opacity:1" />
+                        </linearGradient>
+                    </defs>
+                    <path d="M30 5 L50 15 L50 35 L30 50 L10 35 L10 15 Z" fill="url(#logoGradient)"/>
+                    <path d="M30 15 C35 15 40 20 40 25 C40 30 35 35 30 40 C25 35 20 30 20 25 C20 20 25 15 30 15" fill="white" opacity="0.9"/>
+                    <ellipse cx="30" cy="40" rx="15" ry="3" fill="white" opacity="0.6"/>
+                </svg>
+            </div>
+            <h1 class="brand-title">Dream Harbour</h1>
+            <p class="brand-tagline">Your Gateway to Professional Services</p>
+            
+            <div class="services-list">
+                <div class="service-item">📋 Photostat/Copy Services</div>
+                <div class="service-item">🔗 Adhaar Pan Linking</div>
+                <div class="service-item">📝 Registration Fees</div>
+                <div class="service-item">🚗 Driving Licence</div>
+                <div class="service-item">📄 E-Stamping</div>
+                <div class="service-item">🏛️ Jamabandi</div>
+                <div class="service-item">💰 Nepal Money Transfer</div>
+                <div class="service-item">🎓 Online Certificates</div>
+                <div class="service-item">🌐 Online Internet Services</div>
+                <div class="service-item">🆔 Pan Card &amp; Others</div>
+                <div class="service-item">🖨️ Printing Services</div>
+                <div class="service-item">⚖️ Affidavit/Application</div>
+                <div class="service-item">📜 Deed Writing</div>
+                <div class="service-item">➕ Custom Services</div>
+            </div>
+            
+            <div class="security-badge">
+                <span class="lock-icon">🔒</span>
+                <span>Your data is encrypted and secure</span>
+            </div>
+        </div>
+        
+        <div class="login-right-panel">
+            <div class="login-form-container">
+                <h2 class="welcome-title">Welcome Back</h2>
+                <p class="welcome-subtitle">Sign in to access your dashboard</p>
+                
+                <form id="login-form" class="login-form">
+                    <div class="form-group">
+                        <label for="country-code">Country</label>
+                        <select id="country-code" class="form-control">
+                            <option value="+91" data-flag="🇮🇳">🇮🇳 India (+91)</option>
+                            <option value="+1" data-flag="🇺🇸">🇺🇸 US (+1)</option>
+                            <option value="+44" data-flag="🇬🇧">🇬🇧 UK (+44)</option>
+                            <option value="+61" data-flag="🇦🇺">🇦🇺 Australia (+61)</option>
+                            <option value="+971" data-flag="🇦🇪">🇦🇪 UAE (+971)</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="phone-number">Phone Number</label>
+                        <input type="tel" id="phone-number" class="form-control" placeholder="Enter 10 digit mobile number" maxlength="10" required>
+                        <span class="error-message" id="phone-error"></span>
+                    </div>
+                    
+                    <button type="submit" id="send-otp-btn" class="btn btn-primary btn-full-width">
+                        <span class="btn-text">Send OTP</span>
+                        <span class="btn-loader" style="display: none;">Sending...</span>
+                    </button>
+                </form>
+                
+                <div id="otp-section" class="otp-section" style="display: none;">
+                    <div class="form-group">
+                        <label for="otp-input">Enter OTP</label>
+                        <input type="text" id="otp-input" class="form-control" placeholder="Enter 6 digit OTP" maxlength="6" required>
+                        <span class="error-message" id="otp-error"></span>
+                    </div>
+                    
+                    <button type="button" id="verify-otp-btn" class="btn btn-primary btn-full-width">
+                        <span class="btn-text">Verify OTP</span>
+                        <span class="btn-loader" style="display: none;">Verifying...</span>
+                    </button>
+                    
+                    <div class="resend-otp-container">
+                        <button type="button" id="resend-otp-btn" class="resend-otp-btn" disabled>
+                            <span id="resend-text">Resend OTP in <span id="resend-timer">30</span>s</span>
+                        </button>
+                    </div>
+                </div>
+                
+                <div id="recaptcha-container"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Dashboard Application -->
+    <div id="dashboard-app" class="dashboard-app" style="display: none;">
+        <!-- Sidebar Navigation -->
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <svg class="logo-small" width="40" height="40" viewBox="0 0 60 60" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <defs>
+                        <linearGradient id="logoGradient2" x1="0%" y1="0%" x2="100%" y2="100%">
+                            <stop offset="0%" style="stop-color:#1e40af;stop-opacity:1" />
+                            <stop offset="100%" style="stop-color:#3b82f6;stop-opacity:1" />
+                        </linearGradient>
+                    </defs>
+                    <path d="M30 5 L50 15 L50 35 L30 50 L10 35 L10 15 Z" fill="url(#logoGradient2)"/>
+                    <path d="M30 15 C35 15 40 20 40 25 C40 30 35 35 30 40 C25 35 20 30 20 25 C20 20 25 15 30 15" fill="white" opacity="0.9"/>
+                </svg>
+                <span class="brand-name">Dream Harbour</span>
+            </div>
+            
+            <nav class="sidebar-nav">
+                <a href="#" class="nav-item active" data-section="dashboard">
+                    <span class="nav-icon">📊</span>
+                    <span class="nav-text">Dashboard</span>
+                </a>
+                <a href="#" class="nav-item" data-section="generate-invoice">
+                    <span class="nav-icon">📄</span>
+                    <span class="nav-text">Generate Invoice</span>
+                </a>
+                <a href="#" class="nav-item" data-section="reports">
+                    <span class="nav-icon">📈</span>
+                    <span class="nav-text">Reports &amp; Analytics</span>
+                </a>
+                <a href="#" class="nav-item" data-section="settings">
+                    <span class="nav-icon">⚙️</span>
+                    <span class="nav-text">Business Settings</span>
+                </a>
+                <a href="#" class="nav-item" id="logout-btn">
+                    <span class="nav-icon">🚪</span>
+                    <span class="nav-text">Logout</span>
+                </a>
+            </nav>
+        </aside>
+
+        <!-- Main Content Area -->
+        <main class="main-content">
+            <!-- Dashboard Section -->
+            <section id="dashboard-section" class="content-section active">
+                <div class="section-header">
+                    <h1>Dashboard</h1>
+                    <p>Welcome to your business overview</p>
+                </div>
+                
+                <div class="metrics-grid">
+                    <div class="metric-card" style="background: linear-gradient(135deg, #10b981 0%, #059669 100%);">
+                        <div class="metric-icon">💰</div>
+                        <div class="metric-content">
+                            <div class="metric-label">Total Revenue</div>
+                            <div class="metric-value" id="total-revenue">₹0</div>
+                        </div>
+                    </div>
+                    
+                    <div class="metric-card" style="background: linear-gradient(135deg, #3b82f6 0%, #1e40af 100%);">
+                        <div class="metric-icon">📊</div>
+                        <div class="metric-content">
+                            <div class="metric-label">GST Collected</div>
+                            <div class="metric-value" id="gst-collected">₹0</div>
+                        </div>
+                    </div>
+                    
+                    <div class="metric-card" style="background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);">
+                        <div class="metric-icon">🛠️</div>
+                        <div class="metric-content">
+                            <div class="metric-label">Services Provided</div>
+                            <div class="metric-value" id="services-count">0</div>
+                        </div>
+                    </div>
+                    
+                    <div class="metric-card" style="background: linear-gradient(135deg, #8b5cf6 0%, #6d28d9 100%);">
+                        <div class="metric-icon">👥</div>
+                        <div class="metric-content">
+                            <div class="metric-label">Total Customers</div>
+                            <div class="metric-value" id="customers-count">0</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="charts-grid">
+                    <div class="chart-card">
+                        <h3>Service-wise Revenue Breakdown</h3>
+                        <canvas id="service-revenue-chart"></canvas>
+                    </div>
+                    
+                    <div class="chart-card">
+                        <h3>Monthly Revenue Trend</h3>
+                        <canvas id="monthly-revenue-chart"></canvas>
+                    </div>
+                </div>
+                
+                <div class="table-card">
+                    <div class="table-header">
+                        <h3>Recent Invoices</h3>
+                        <input type="text" id="invoice-search" class="search-input" placeholder="Search invoices...">
+                    </div>
+                    <div class="table-container">
+                        <table id="invoices-table">
+                            <thead>
+                                <tr>
+                                    <th>Invoice No.</th>
+                                    <th>Customer</th>
+                                    <th>Date</th>
+                                    <th>Services</th>
+                                    <th>Amount</th>
+                                    <th>GST</th>
+                                    <th>Total</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="invoices-tbody">
+                                <tr>
+                                    <td colspan="8" class="no-data">No invoices found. Create your first invoice!</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Generate Invoice Section -->
+            <section id="generate-invoice-section" class="content-section">
+                <div class="section-header">
+                    <h1>Generate Invoice</h1>
+                    <p>Create professional invoices for your customers</p>
+                </div>
+                
+                <div class="invoice-layout">
+                    <div class="invoice-form-area">
+                        <!-- Customer Details -->
+                        <div class="form-card">
+                            <h3 class="form-card-title">Customer Details</h3>
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="customer-mobile" class="required">Mobile Number</label>
+                                    <input type="tel" id="customer-mobile" class="form-control" placeholder="Enter 10 digit mobile" maxlength="10" required>
+                                    <div id="customer-suggestions" class="customer-suggestions"></div>
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="customer-name" class="required">Full Name</label>
+                                    <input type="text" id="customer-name" class="form-control" placeholder="Customer full name" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="customer-email">Email</label>
+                                    <input type="email" id="customer-email" class="form-control" placeholder="email@example.com">
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="customer-gstin">GSTIN</label>
+                                    <input type="text" id="customer-gstin" class="form-control" placeholder="22AAAAA0000A1Z5">
+                                </div>
+                                <div class="form-group">
+                                    <label for="customer-address">Address</label>
+                                    <textarea id="customer-address" class="form-control" placeholder="Complete address" rows="2"></textarea>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Services Given -->
+                        <div class="form-card">
+                            <h3 class="form-card-title">Services Given</h3>
+                            <div id="services-container">
+                                <!-- Services will be added dynamically -->
+                            </div>
+                            <button type="button" id="add-service-btn" class="btn btn-outline">+ Add Service</button>
+                        </div>
+                        
+                        <!-- Action Buttons -->
+                        <div class="form-actions">
+                            <button type="button" id="clear-form-btn" class="btn btn-secondary">Clear Form</button>
+                            <button type="button" id="save-draft-btn" class="btn btn-outline">Save as Draft</button>
+                            <button type="button" id="generate-invoice-btn" class="btn btn-primary btn-large">Generate Invoice</button>
+                        </div>
+                    </div>
+                    
+                    <!-- Invoice Preview -->
+                    <div class="invoice-preview-area">
+                        <div class="invoice-preview" id="invoice-preview">
+                            <div class="invoice-header">
+                                <div class="invoice-logo">
+                                    <svg width="50" height="50" viewBox="0 0 60 60" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                        <defs>
+                                            <linearGradient id="logoGradient3" x1="0%" y1="0%" x2="100%" y2="100%">
+                                                <stop offset="0%" style="stop-color:#1e40af;stop-opacity:1" />
+                                                <stop offset="100%" style="stop-color:#3b82f6;stop-opacity:1" />
+                                            </linearGradient>
+                                        </defs>
+                                        <path d="M30 5 L50 15 L50 35 L30 50 L10 35 L10 15 Z" fill="url(#logoGradient3)"/>
+                                        <path d="M30 15 C35 15 40 20 40 25 C40 30 35 35 30 40 C25 35 20 30 20 25 C20 20 25 15 30 15" fill="white" opacity="0.9"/>
+                                    </svg>
+                                    <div>
+                                        <h2>Dream Harbour</h2>
+                                        <p class="business-tagline">Professional Services</p>
+                                    </div>
+                                </div>
+                                <div class="invoice-title">
+                                    <h1>INVOICE</h1>
+                                    <p class="invoice-number" id="preview-invoice-number">DH-2025-10-0001</p>
+                                    <p class="invoice-date" id="preview-invoice-date">Date: October 25, 2025</p>
+                                </div>
+                            </div>
+                            
+                            <div class="invoice-parties">
+                                <div class="invoice-from">
+                                    <h4>From:</h4>
+                                    <p id="preview-business-name"><strong>Dream Harbour</strong></p>
+                                    <p id="preview-business-address">Your Business Address</p>
+                                    <p id="preview-business-gstin">GSTIN: Your GSTIN</p>
+                                    <p id="preview-business-contact">Contact: Your Contact</p>
+                                </div>
+                                <div class="invoice-to">
+                                    <h4>Bill To:</h4>
+                                    <p id="preview-customer-name">Customer Name</p>
+                                    <p id="preview-customer-address">Customer Address</p>
+                                    <p id="preview-customer-gstin"></p>
+                                    <p id="preview-customer-mobile"></p>
+                                </div>
+                            </div>
+                            
+                            <table class="invoice-table">
+                                <thead>
+                                    <tr>
+                                        <th>S.No</th>
+                                        <th>Description</th>
+                                        <th>SAC</th>
+                                        <th>Qty</th>
+                                        <th>Rate</th>
+                                        <th>GST%</th>
+                                        <th>GST Amt</th>
+                                        <th>Total</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="preview-services-tbody">
+                                    <tr>
+                                        <td colspan="8" class="no-data">No services added yet</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            
+                            <div class="invoice-totals">
+                                <div class="totals-row">
+                                    <span>Subtotal:</span>
+                                    <span id="preview-subtotal">₹0.00</span>
+                                </div>
+                                <div class="totals-row">
+                                    <span>CGST:</span>
+                                    <span id="preview-cgst">₹0.00</span>
+                                </div>
+                                <div class="totals-row">
+                                    <span>SGST:</span>
+                                    <span id="preview-sgst">₹0.00</span>
+                                </div>
+                                <div class="totals-row total">
+                                    <span>Total Amount:</span>
+                                    <span id="preview-total">₹0.00</span>
+                                </div>
+                            </div>
+                            
+                            <div class="invoice-footer">
+                                <p><strong>Terms &amp; Conditions:</strong></p>
+                                <p>Payment is due within 30 days. Thank you for your business!</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Reports Section -->
+            <section id="reports-section" class="content-section">
+                <div class="section-header">
+                    <h1>Reports &amp; Analytics</h1>
+                    <p>Analyze your business performance and GST data</p>
+                </div>
+                
+                <div class="filter-card">
+                    <div class="filter-row">
+                        <div class="form-group">
+                            <label>From Date</label>
+                            <input type="date" id="report-from-date" class="form-control">
+                        </div>
+                        <div class="form-group">
+                            <label>To Date</label>
+                            <input type="date" id="report-to-date" class="form-control">
+                        </div>
+                        <div class="form-group">
+                            <label>Service Type</label>
+                            <select id="report-service-filter" class="form-control">
+                                <option value="all">All Services</option>
+                            </select>
+                        </div>
+                        <button type="button" id="generate-report-btn" class="btn btn-primary">Generate Report</button>
+                    </div>
+                </div>
+                
+                <div class="report-card">
+                    <div class="report-header">
+                        <h3>GST Summary</h3>
+                        <button type="button" id="export-gst-csv" class="btn btn-outline btn-sm">Export CSV</button>
+                    </div>
+                    <table class="report-table">
+                        <thead>
+                            <tr>
+                                <th>Total Sales</th>
+                                <th>Taxable Amount</th>
+                                <th>CGST</th>
+                                <th>SGST</th>
+                                <th>Total GST</th>
+                            </tr>
+                        </thead>
+                        <tbody id="gst-summary-tbody">
+                            <tr>
+                                <td id="report-total-sales">₹0.00</td>
+                                <td id="report-taxable-amount">₹0.00</td>
+                                <td id="report-cgst">₹0.00</td>
+                                <td id="report-sgst">₹0.00</td>
+                                <td id="report-total-gst">₹0.00</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                
+                <div class="report-card">
+                    <div class="report-header">
+                        <h3>Service Performance</h3>
+                    </div>
+                    <table class="report-table">
+                        <thead>
+                            <tr>
+                                <th>Service Name</th>
+                                <th>Count</th>
+                                <th>Total Revenue</th>
+                                <th>Avg. per Transaction</th>
+                            </tr>
+                        </thead>
+                        <tbody id="service-performance-tbody">
+                            <tr>
+                                <td colspan="4" class="no-data">No data available for selected period</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+            <!-- Settings Section -->
+            <section id="settings-section" class="content-section">
+                <div class="section-header">
+                    <h1>Business Settings</h1>
+                    <p>Manage your business information and preferences</p>
+                </div>
+                
+                <div class="settings-grid">
+                    <div class="settings-card">
+                        <h3>Business Information</h3>
+                        <div class="form-group">
+                            <label for="business-name">Business Name</label>
+                            <input type="text" id="business-name" class="form-control" placeholder="Dream Harbour">
+                        </div>
+                        <div class="form-group">
+                            <label for="business-gstin">GSTIN</label>
+                            <input type="text" id="business-gstin" class="form-control" placeholder="22AAAAA0000A1Z5">
+                        </div>
+                        <div class="form-group">
+                            <label for="business-email">Email</label>
+                            <input type="email" id="business-email" class="form-control" placeholder="info@dreamharbour.com">
+                        </div>
+                        <div class="form-group">
+                            <label for="business-phone">Phone</label>
+                            <input type="tel" id="business-phone" class="form-control" placeholder="+91 1234567890">
+                        </div>
+                        <div class="form-group">
+                            <label for="business-address-settings">Address</label>
+                            <textarea id="business-address-settings" class="form-control" rows="3" placeholder="Complete business address"></textarea>
+                        </div>
+                    </div>
+                    
+                    <div class="settings-card">
+                        <h3>GST Configuration</h3>
+                        <div class="form-group">
+                            <label for="default-gst-rate">Default GST Rate</label>
+                            <select id="default-gst-rate" class="form-control">
+                                <option value="0">0%</option>
+                                <option value="5">5%</option>
+                                <option value="12">12%</option>
+                                <option value="18" selected>18%</option>
+                                <option value="28">28%</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="gst-state">GST Registration State</label>
+                            <select id="gst-state" class="form-control">
+                                <option value="delhi">Delhi</option>
+                                <option value="maharashtra">Maharashtra</option>
+                                <option value="karnataka">Karnataka</option>
+                                <option value="gujarat">Gujarat</option>
+                                <option value="rajasthan">Rajasthan</option>
+                                <option value="punjab">Punjab</option>
+                            </select>
+                        </div>
+                        
+                        <h3 style="margin-top: 2rem;">Invoice Settings</h3>
+                        <div class="form-group">
+                            <label for="invoice-prefix">Invoice Prefix</label>
+                            <input type="text" id="invoice-prefix" class="form-control" value="DH" placeholder="DH">
+                        </div>
+                        <div class="form-group">
+                            <label for="terms-conditions">Terms &amp; Conditions</label>
+                            <textarea id="terms-conditions" class="form-control" rows="3" placeholder="Enter terms and conditions">Payment is due within 30 days. Thank you for your business!</textarea>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="settings-actions">
+                    <button type="button" id="save-settings-btn" class="btn btn-primary btn-large">Save Settings</button>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <!-- Toast Notification -->
+    <div id="toast" class="toast"></div>
+
+    <!-- Scripts -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-storage-compat.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+    <script src="app.js"></script>
+</body>
+</html>
