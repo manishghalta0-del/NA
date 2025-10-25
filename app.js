@@ -242,6 +242,7 @@ function handleSendOTP(e) {
     initRecaptcha();
     
     // Send OTP
+    firebase.auth().settings.appVerificationDisabledForTesting = true;
     auth.signInWithPhoneNumber(fullPhoneNumber, recaptchaVerifier)
         .then((result) => {
             confirmationResult = result;
