@@ -1,7 +1,4 @@
-import { initializeApp } from "firebase/app";
-import { getAuth, RecaptchaVerifier, signInWithPhoneNumber, signOut } from "firebase/auth";
-import { getFirestore, collection, addDoc, query, where, getDocs } from "firebase/firestore";
-
+// Firebase configuration
 const firebaseConfig = {
   apiKey: "AIzaSyBK8K0nIbc1DCj7kghQKYOLIhsB_3EvWQg",
   authDomain: "dreamharbour-billing.firebaseapp.com",
@@ -11,13 +8,7 @@ const firebaseConfig = {
   appId: "1:32291586019:web:461035a507ad3f2dcfead6"
 };
 
-const app = initializeApp(firebaseConfig);
-const auth = getAuth(app);
-const db = getFirestore(app);
-
-let recaptchaVerifier;
-let confirmationResult;
-let currentUser = null;
+let auth, db, recaptchaVerifier, confirmationResult, currentUser = null;
 const OWNER_PHONE = "9873329494";
 
 const SERVICES = [
@@ -35,6 +26,19 @@ const SERVICES = [
   "Affidavit/Application",
   "Deed Writing"
 ];
+
+// Initialize Firebase when page loads
+window.addEventListener('DOMContentLoaded', () => {
+  firebase.initializeApp(firebaseConfig);
+  auth = firebase.auth();
+  db = firebase.firestore();
+  
+  recaptchaVerifier = new firebase.auth.RecaptchaVerifier('recaptcha-container', {
+    size: 'invisible'
+  });
+  
+  initializeLogin();
+});
 
 function initializeLogin() {
   const loginContainer = document.getElementById('login-container');
@@ -83,8 +87,6 @@ function initializeLogin() {
       </div>
     </div>
   `;
-  
-  window.recaptchaVerifier = new RecaptchaVerifier(auth, 'recaptcha-container', { size: 'invisible' });
 }
 
 async function sendOTP() {
@@ -101,7 +103,7 @@ async function sendOTP() {
   
   try {
     statusMessage.innerHTML = '<p style="color: blue;">📱 Sending OTP...</p>';
-    confirmationResult = await signInWithPhoneNumber(auth, fullPhoneNumber, recaptchaVerifier);
+    confirmationResult = await auth.signInWithPhoneNumber(fullPhoneNumber, recaptchaVerifier);
     document.getElementById('otpContainer').style.display = 'block';
     statusMessage.innerHTML = '<p style="color: green;">✅ OTP sent successfully!</p>';
   } catch (error) {
@@ -204,7 +206,7 @@ async function createUser() {
   try {
     message.innerHTML = '<p style="color: blue;">⏳ Creating user...</p>';
     
-    await addDoc(collection(db, "users"), {
+    await db.collection("users").add({
       phoneNumber: phoneInput,
       services: selectedServices,
       createdBy: currentUser.phoneNumber,
@@ -227,8 +229,9 @@ async function loadUsersList() {
   const usersList = document.getElementById('usersList');
   
   try {
-    const q = query(collection(db, "users"), where("createdBy", "==", currentUser.phoneNumber));
-    const snapshot = await getDocs(q);
+    const snapshot = await db.collection("users")
+      .where("createdBy", "==", currentUser.phoneNumber)
+      .get();
     
     if (snapshot.empty) {
       usersList.innerHTML = '<p>No users created yet</p>';
@@ -244,7 +247,7 @@ async function loadUsersList() {
           <ul style="list-style: none; padding-left: 0; margin: 10px 0;">
             ${user.services.map(s => `<li style="padding: 5px 0; color: #666;">✓ ${s}</li>`).join('')}
           </ul>
-          <small style="color: #999;">Created: ${new Date(user.createdAt.toDate()).toLocaleDateString()}</small>
+          <small style="color: #999;">Created: ${user.createdAt.toDate().toLocaleDateString()}</small>
         </div>
       `;
     }).join('');
@@ -279,8 +282,9 @@ async function loadUserServices() {
   const userServices = document.getElementById('userServices');
   
   try {
-    const q = query(collection(db, "users"), where("phoneNumber", "==", currentUser.phoneNumber.slice(-10)));
-    const snapshot = await getDocs(q);
+    const snapshot = await db.collection("users")
+      .where("phoneNumber", "==", currentUser.phoneNumber.slice(-10))
+      .get();
     
     if (snapshot.empty) {
       userServices.innerHTML = '<p>No services assigned yet</p>';
@@ -300,14 +304,10 @@ async function loadUserServices() {
 
 async function logout() {
   try {
-    await signOut(auth);
+    await auth.signOut();
     currentUser = null;
     initializeLogin();
   } catch (error) {
     console.error("Error logging out:", error);
   }
 }
-
-window.addEventListener('DOMContentLoaded', () => {
-  initializeLogin();
-});
